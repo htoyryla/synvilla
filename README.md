@@ -176,6 +176,33 @@ You can now use CONT, NEW and IMG as before, the mask will just restrict the cha
 
 To stop masking, press x in the mask image selector.
 
+## Hints
+
+** How to run in 8GB GPU **
+
+Try the following settings in ini file:
+
+```
+
+[image]
+h = 512
+w = 512
+
+[run]
+iters = 25
+path = 
+name = 
+prompt = an abstract watercolor
+g = 7.5
+model = ./models/stable-diffusion-v1-4
+modeldir = ./models
+tknzr = 
+seed = 0
+slices = 8
+
+sched = LMS
+```
+
 ## Acknowledgements
 
 This software is deeply dependent on Diffusers library (https://github.com/huggingface/diffusers) and the code of the server engine makes extensive use of techniques learned from the various diffusers pipelines. 

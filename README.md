@@ -86,7 +86,7 @@ python app.py
 **models**
 
 Download models from Huggingface (see links below) and place them in ./models . You only need one model to start,
-it is recommended that you begin with stable-diffusion-v1-4.
+it is recommended that you begin with stable-diffusion-v1-4 (which is assumed by the default sds.ini file).
 
 ```
 https://huggingface.co/CompVis/stable-diffusion-v1-4

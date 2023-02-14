@@ -96,6 +96,15 @@ https://huggingface.co/stabilityai/stable-diffusion-2-1
 https://huggingface.co/22h/vintedois-diffusion-v0-1
 ```
 
+In order to download models from Huggingface, you usually need to be logged in to their site.
+Because models are huge files, you need to install lfs support for git. Then you can download a model using git clone. 
+
+```
+git lfs install
+git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
+```
+
+
 ## Use
 
 Start the client on your browser by going localhost:5000 or url-of-your-server:5000 if you access from another computer.

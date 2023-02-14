@@ -1,4 +1,4 @@
-# synvilla_private
+# Synvilla
 
 ![Näyttökuva 2023-2-14 kello 9 42 25](https://user-images.githubusercontent.com/15064373/218671231-405729d9-065d-4282-a724-6a60d0c31df1.png)
 

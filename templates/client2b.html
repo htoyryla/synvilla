@@ -1,0 +1,264 @@
+<html>
+  <head>
+
+  <title>Synvilla</title>
+  <link rel="stylesheet" href="static/synvilla.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+   
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
+ 
+  <script src="static/client2b.js"></script>
+	  
+  <script>	  
+	  function start() {
+		  main()
+  	  }
+	  setTimeout(start, 500) ;
+  </script>	  	  
+
+ 
+</head>  
+<body>  
+<div id="app">
+   <v-app>
+	<div class="logo">synvilla<span class="v" id="version"></span><span id="status"></span><span id="status2"></span></div>
+  	<div id="uicontainer">
+	  	<div id="imgarea">
+	        <img id="resimg" v-bind:src="imgpath" />
+			<div id="caption">+ {{caption}}</div>
+			<div id="ncaption">- <span>{{ntext}}</span></div>
+        
+	  	    <div class="itersph">
+	  	        <div class="iters" style="display:none;">current step</div>
+				<div id="itersl" class="sl"></div>
+	        </div>
+	    </div>
+	  	<div id="controlarea">
+			<div id="promptsection">
+				<div id="promptboxes">
+			  		<div class="prompt_area">
+			  	      <v-textarea id="text" label="Prompt" rows=3 outlined clearable v-bind:value=text></v-textarea>
+			  	    </div>
+			  		<div class="nprompt_area">
+			  	      <v-textarea id="ntext" label="Neg prompt" rows=3 outlined clearable v-bind:value=ntext></v-textarea>
+			  	    </div>
+		        </div>
+			    <v-btn type="button" id="send" class="mx-2" v-on:click.native="do_send()" small>Prompts</v-btn>
+			</div>
+	  		<div class="buttonarea">
+	  			<v-btn type="button"  id="next" class="mx-2" v-on:click.native="do_next()" small>Cont</v-btn>
+	  			<v-btn type="button"  id="reset" class="mx-2" v-on:click.native="do_reset()" small>New</v-btn>
+				
+
+		 		  <div id="multicb">
+		 		  <v-checkbox
+		 		        label="multi"
+		 				v-model="multi"
+		 				dense
+		 		      ></v-checkbox>
+		 		  </div>	  
+	  
+				  <v-btn 
+				     id="dlbtn"
+				     href="static/result.jpg" 
+				     target="_blank"
+					 small
+					 download>
+				         Download
+				  </v-btn>
+		 	  	  <v-dialog content-class="settings_panel" v-model="settingsdialog">
+		 		    <template v-slot:activator="{ on, attrs }">
+		 		        <v-btn  
+		 		          v-bind="attrs"
+		 		          v-on="on"
+		 				  v-on:click="open_settings()"
+		 				  class="mx-2"
+		 				  dense
+		 				  small
+				  
+		 		        >
+		 		         Settings
+		 		        </v-btn>
+		 		    </template>  
+		 		   <v-card >
+		 		      <v-card-title>
+		 		          <span>Settings</span>
+		 		      </v-card-title>	 
+		 		      <v-card-text>
+		 		        <v-container>		 
+		 				  <v-row
+		 				 	dense
+		 				  > 
+		 			  	  <v-select
+		 						  id = "hsel"
+		 						  :items = "hlist"
+		 						  label = "height"
+		 						  dense
+		 						  outlined
+		 						  v-model = h
+		 				  ></v-select>
+		 				  <v-select
+		 						  id="wsel"
+		 						  :items = "wlist"
+		 						  label = "width"
+		 						  dense
+		 						  outlined
+		 						  v-model = w
+		 				  ></v-select>
+		 				  </v-row>
+		 				  <v-row
+		 						dense
+		 				  >
+		 				  <v-select
+		 					  id = "modelsel"
+		 					  :items = "modellist"
+		 					  label = "model"
+		 					  dense
+		 					  outlined
+		 					  v-model = model
+		 				 ></v-select>
+		 		  		 <v-select
+		 					  id = "schedsel"
+		 					  :items = "schedlist"
+		 					  label = "scheduler"
+		 					  dense
+		 					  outlined
+		 					  v-model = sched
+		 				 ></v-select>
+		 		         </v-row>
+			  		     <v-checkbox
+			  		        label="show mask panel"
+			  				v-model="showmaskarea"
+			 				dense
+			  		      ></v-checkbox>
+		 	         </v-container>
+		            </v-card-text>
+		            <v-card-actions>		
+		 		       <v-row>
+		 	           <v-btn
+		 			       v-on:click="cancel_settings()"
+		 			       class="mx-2"
+		 	               text
+		 				   @click="settingsdialog = false"
+		 	            >
+		 	               Close
+		 	            </v-btn>
+		 	            <v-btn
+		 				   v-on:click="do_settings()"
+		  				   class="mx-2"
+		 	               text
+		 				   @click="settingsdialog = false"
+		 	             >
+		 	               Save
+		 	            </v-btn>
+		 			</v-row>
+		 		  </v-card-actions>
+		 	    </v-card>
+		 	   </v-dialog>
+				
+				
+	  	    </div>
+		
+
+	  	<div id="diffusionarea">
+	  			  <v-slider
+				  		id=beta label="push" min="0." max="1." step="0.02" v-model=beta height=12 thumb-label @change="do_beta()" dense>			      
+			      </v-slider>
+	  			  <v-slider
+				  	 	id=steps label="time" min="20" max="100"  step="5" height=12 v-model=steps thumb-label @change="do_steps" dense>			      
+			       </v-slider>
+			       <v-slider
+				   	 	id=lr label="guidance" min="2" max="20" step="0.1" v-model=lr  height=12 thumb-label @change="do_lr()" dense>			      
+			       </v-slider>
+	  	</div>
+				
+		
+	  	<div id="inputarea">
+			  <div id= "imgsel">
+	  			<v-file-input 
+					label="init image" 
+					id="initimgsel"
+					accept = "image/*" 
+					prepend-icon="mdi-camera"
+					clearable
+					outlined dense
+				></v-file-input>
+				<v-btn type="button"  id="imgsend" x-small v-on:click.native="do_init_img()">Img</v-btn>
+			</div>
+	    		<v-slider 
+					id="gamma" label="brightness" min="0.4" max="2." step="0.02" value="1"height=12 thumb-label dense v-model="gamma" @change="do_gamma()">
+			    </v-slider>
+	    		<v-slider 
+					id="contrast" label="contrast" min="0.4" max="2." step="0.02" value="1"height=12 thumb-label dense v-model="contrast" @change="do_contrast()">
+			    </v-slider>
+	  			<v-slider
+					 id="noise" label="add noise" min="0." max="1." step="0.02" height=12 thumb-label dense v-model="noise" @change="do_noise()">
+		  	    </v-slider>
+	    </div>	
+		<div id="extrasarea">
+			  <v-slider
+		  		id="bgw" label="complexity" min=".7" max="1.1" step="0.02" height=12 thumb-label v-model="bgw" @change="do_bgw()" dense>			      
+	      </v-slider>
+			  <v-slider
+		  		id="blend" label="blend" min="0" max="10" step="1" value="0" height=12 thumb-label v-model="blend" @change="do_blend()" dense>			      
+	      </v-slider>	 
+    	</div>
+		
+		<v-container
+			id = "maskarea"
+			v-show = "showmaskarea"
+			>
+			<div id="maskpromptarea" >
+				<div id="maskpromptboxes">
+					<div class="prompt_area">
+				      <v-textarea id="mtext" label="Mask prompt" rows=2 outlined clearable v-bind:value=mtext></v-textarea>
+				    </div>
+					<div class="nprompt_area">
+				      <v-textarea id="nmtext" label="Neg maskprompt" rows=2 outlined clearable v-bind:value=nmtext></v-textarea>
+					</div>
+		        </div>
+				<div id="mpromptbtnarea">
+				<v-btn type="button" id="send2" class="mx-2" v-on:click.native="do_send()" small>Prompts</v-btn>
+			    </div>
+			</div>		
+			<div id= "masksel">
+				<v-file-input 
+					label="mask image" 
+					id="maskimgsel"
+					accept = "image/*" 
+					prepend-icon="mdi-camera"
+					clearable
+					outlined dense
+					@click:clear="reset_mask()"
+				></v-file-input>
+				<v-btn type="button"  id="masksend" x-small v-on:click.native="do_mask_img()">Send</v-btn>
+			</div>
+			<div id="inpaint">
+ 		    <v-checkbox
+ 		        label="inpaint"
+ 				v-model="inpaint"
+				v-on:change="do_inpaint()"
+ 				dense
+ 		      ></v-checkbox>
+			  <v-slider
+		  		id="fgw" label="complexity" min=".7" max="1.1" step="0.02" height=12 thumb-label v-model="fgw" @change="do_fgw()" dense>			      
+	          </v-slider>			  
+		  </div>		
+	    </v-container>
+	
+		<v-container
+		   id="systemarea"
+		   >	
+
+     </v-container> 
+	    	
+    </div>
+ </v-app>
+</div>	
+
+</body>
+</html>  

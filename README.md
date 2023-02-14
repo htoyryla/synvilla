@@ -87,6 +87,7 @@ python app.py
 
 Download models from Huggingface (see links below) and place them in ./models
 
+```
 https://huggingface.co/CompVis/stable-diffusion-v1-4
 https://huggingface.co/runwayml/stable-diffusion-v1-5
 https://huggingface.co/stabilityai/stable-diffusion-2

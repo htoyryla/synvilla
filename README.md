@@ -93,7 +93,7 @@ https://huggingface.co/runwayml/stable-diffusion-v1-5
 https://huggingface.co/stabilityai/stable-diffusion-2
 https://huggingface.co/stabilityai/stable-diffusion-2-1
 https://huggingface.co/22h/vintedois-diffusion-v0-1
-
+```
 
 ## Use
 

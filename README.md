@@ -178,7 +178,7 @@ To stop masking, press x in the mask image selector.
 
 ## Hints
 
-** How to run in 8GB GPU **
+**How to run in 8GB GPU**
 
 Try the following settings in ini file:
 

@@ -81,9 +81,9 @@ def preprocess(image):
 
     if image.mode == "I":
         ima = np.array(image)
-        ima = (ima / 65536).astype(np.uint8)
+        ima = (255 * ima / ima.max()).astype(np.uint8)
         print(ima.min(), ima.max(), ima.dtype.type)
-        image = image.fromArray(ima)
+        image = Image.fromarray(ima)
     
     print("--------_",api.gamma, api.contrast)
     image = ImageEnhance.Brightness(image).enhance(api.gamma)

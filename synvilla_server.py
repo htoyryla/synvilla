@@ -75,6 +75,15 @@ def preprocess(image):
     w, h = image.size
     w, h = map(lambda x: x - x % 32, (w, h))  # resize to integer multiple of 32
     image = image.resize((w, h), resample=PIL.Image.LANCZOS)
+    #image = image.convert("RGB")
+    
+    print(image.format, image.size, image.mode)
+
+    if image.mode == "I":
+        ima = np.array(image)
+        ima = (ima / 65536).astype(np.uint8)
+        print(ima.min(), ima.max(), ima.dtype.type)
+        image = image.fromArray(ima)
     
     print("--------_",api.gamma, api.contrast)
     image = ImageEnhance.Brightness(image).enhance(api.gamma)
@@ -83,8 +92,8 @@ def preprocess(image):
 
     if image.ndim == 2: # handle BW image
         print(image.dtype)
-        if (image.dtype.type is np.uint32) or (image.dtype.type is np.int32): #catch uint32 BW images TODO ch3ck for image dtype
-          image = image.astype(np.float32) / 255.
+        #if (image.dtype.type is np.uint32) or (image.dtype.type is np.int32): #catch uint32 BW images TODO ch3ck for image dtype
+        #  image = image.astype(np.float32) / 8421504
         image = np.repeat(image[:, :, np.newaxis], 3, axis=2) #image[:,:,np.newaxis]
     
     image = image.astype(np.float32) / 255.0
